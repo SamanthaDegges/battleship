@@ -30,20 +30,22 @@ function addPlayer(e){
   p++
 }
 
-
-// var lengthOfPlayers = playesrRef.length();
-// console.log(lengthOfPlayers);
-
-
 // Event Listeners
 
 var countPlayers = function(){
+  $("button").addClass("hidden");
   playersRef.on("value", function(snapshot) {
     var pCount = (snapshot.val().count);
     if (pCount === 2) {
-      $("button").addClass("hidden");
+      playerTurn();
     } $("#stats").text("Current Players: "+pCount);
   }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
   });
 }
+
+var playerTurn = function() {
+  var turn = player1;
+  console.log();
+}
+//The existence of playerTurn means the game is on. Playerturn doesnt exists as a an obj in firebase until player are equal to two. Playerturn is nullified upon a win or cats game.
