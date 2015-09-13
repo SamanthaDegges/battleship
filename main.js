@@ -18,40 +18,32 @@ function init(){
 }
 
 var ref = new Firebase("https://mywittlefirebase.firebaseio.com/");
-//new Firebase("https://docs-examples.firebaseio.com/web/data/users/mchen/name");
 var playersRef = ref.child("players");
 
 $("button").on("click", addPlayer);
 
+var p = 1;
 function addPlayer(e){
-  //ref.addChild({"players": "test"});
-  playersRef.push({name: "Sam"});
-  console.log("appended object players with a object of player 1.");
+  playersRef.set({count: p});
+  //console.log("button event handler fired.");
+  countPlayers();
+  p++
 }
 
-playersRef.on("update", function(snapshot) {
-  //var players = JSON.parse(playerCount.players);
-  console.log("players are at: " + snapshot.key(), snapshot.val());
-});
 
-// function buildShip(val) {
-//   console.log(val.length);
-//   var i = 0;
-//   if (i<val.length){
-//     $('#playerBoard td').on('click', function(e){
-//       console.log('clicked');
-//       $(this).addClass('ship');
-//       i++;
-//     });
-//   }
-//   return;
-// }
+// var lengthOfPlayers = playesrRef.length();
+// console.log(lengthOfPlayers);
 
 
-//   myShips.forEach(function(val, index){
-//     buildShip(val);
-//   });
-// }
-  // $("td").on("click", buildShip);
-  // $("#playerBoard td").on("click", function(){
-  // });
+// Event Listeners
+
+var countPlayers = function(){
+  playersRef.on("value", function(snapshot) {
+    var pCount = (snapshot.val().count);
+    if (pCount === 2) {
+      $("button").addClass("hidden");
+    } $("#stats").text("Current Players: "+pCount);
+  }, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+  });
+}
