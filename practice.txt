@@ -1,0 +1,54 @@
+$("document").ready(init);
+
+var myShips = ([
+  {ship1: "firstShip"},
+  {ship2: "secondShip"}
+]);
+
+var ref = new Firebase('https://mywittlefirebase.firebaseio.com/');
+
+console.log("it works.");
+
+function init(){
+
+  ref.push([
+    {myShips},
+    {gameState: null},
+    {players: [{player1: false}, {player2: false}]}
+  ]);
+   //create this data in firebase so we can mutate it later.
+
+  $('button').click(changeGameState); //clicking the button tells firebase, that a player is 'signing up to play.'
+
+}
+
+
+
+
+function changeGameState() {
+  var gameState = {on: null};
+  console.log("changegameState was triggered.");
+  //grab data from firebase
+  if (length === 2) {
+    gameState = true;
+    ref.update(gamestate, "on");
+    $(".col-ls-2").text("You've initiated game play. Please place your ships until another player joins.");
+  }
+}
+
+ref.on('value', function(snapshot){
+  console.log(snapshot.val());
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
+
+
+var refShips = ref.child("myShips");
+
+refShips.update({sunk: "true"});
+
+// //to update(add a player to game)
+// var hopperRef = usersRef.child("gracehop");
+// hopperRef.update({
+//   "nickname": "Amazing Grace"
+// });
